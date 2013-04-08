@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			private var _bot:BasicObjectTest;
+
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				_bot = new BasicObjectTest();
+				cmbTestMethods.dataProvider = new ArrayCollection(_bot.getMethodsDataProvider());
+				cmbTestMethods.selectedIndex = 0;
+				System.gc();
+			}
+			
+			private function goClicked(event:MouseEvent):void {
+				txtResult.text += _bot.testCreateObjectArrayClass(cmbTestMethods.selectedIndex, parseInt(txtDataSize.text));
+				System.gc();
+			}
+			
+			private function clearClicked(event:MouseEvent):void {
+				txtResult.text = "";
+				System.gc();
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextArea x="64" y="102" width="881" height="321" id="txtResult"/>
+	<s:TextInput x="158" y="26" width="289" id="txtDataSize" text="1000000"/>
+	<s:Button x="476" y="27" label="Go" id="btnGo" click="goClicked(event)" width="131" height="54"/>
+	<s:Label x="75" y="30" text="Data Size:" width="64" height="21"/>
+	<s:ComboBox x="156" y="58" width="291" id="cmbTestMethods"/>
+	<s:Label x="75" y="62" text="Test Method:"/>
+	<s:Button x="662" y="27" label="Clear Results" width="118" height="54" id="btnClear" click="clearClicked(event)"/>
+</s:Application>
