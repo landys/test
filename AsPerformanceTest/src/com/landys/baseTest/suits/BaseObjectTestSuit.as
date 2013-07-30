@@ -1,25 +1,37 @@
-package {
+package com.landys.baseTest.suits {
+	import com.landys.baseTest.FuncGroupInfo;
+	import com.landys.baseTest.FuncInfo;
+	
 	import flash.system.System;
 	import flash.utils.getTimer;
 
-	public class BasicObjectTest {
-		public function BasicObjectTest() {
+	public class BaseObjectTestSuit extends BaseTestSuit {
+		public function BaseObjectTestSuit() {
+			super();
 		}
 		
-		private var testFunctions:Array = [testCreateClassObjects, testCreateObjectStringKeyObjects, testCreateObjectIntKeyObjects, 
-			testCreateArrayObjects, testReadClassObjects, testReadObjectStringKeyObjects, testReadObjectIntKeyObjects, 
-			testReadArrayObjects];
-		
-		private var testFunctionsString:Array = ["CreateClassObjects", "CreateObjectStringKeyObjects", "CreateObjectIntKeyObjects", 
-			"CreateArrayObjects", "ReadClassObjects", "ReadObjectStringKeyObjects", "ReadObjectIntKeyObjects", 
-			"ReadArrayObjects"];
-		
-		public function getMethodsDataProvider():Array {
-			return testFunctionsString;
+		/**
+		 * Create function group for base object test. 
+		 * @return 
+		 * 
+		 */
+		protected override function createFunGroup():FuncGroupInfo {
+			var nParas:int = 1;
+			
+			return new FuncGroupInfo("Base object tests", 
+				[new FuncInfo("CreateClassObjects", testCreateClassObjects, nParas), 
+					new FuncInfo("CreateObjectStringKeyObjects", testCreateObjectStringKeyObjects, nParas), 
+					new FuncInfo("CreateObjectIntKeyObjects", testCreateObjectIntKeyObjects, nParas),
+					new FuncInfo("CreateArrayObjects", testCreateArrayObjects, nParas),
+					new FuncInfo("ReadClassObjects", testReadClassObjects, nParas),
+					new FuncInfo("ReadObjectStringKeyObjects", testReadObjectStringKeyObjects, nParas),
+					new FuncInfo("ReadObjectIntKeyObjects", testReadObjectIntKeyObjects, nParas), 
+					new FuncInfo("ReadArrayObjects", testReadArrayObjects, nParas)], 
+				nParas);
 		}
 		
-		public function testCreateObjectArrayClass(methodIndex:int, dataSize:int):String {
-			return testFunctions[methodIndex](dataSize);
+		public override function getDefaultParaValues():Array {
+			return [500000];
 		}
 		
 		//// test read objects

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			private var _mainEntry:MainEntry;
+			
+			private static const DefaultGroupIndex:int = 0;
+
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				_mainEntry = new MainEntry();
+				
+				var groupIndex:int = DefaultGroupIndex;
+				
+				cmbMethodGroups.dataProvider = new ArrayCollection(_mainEntry.getMethodGroupsDataProvider());
+				cmbMethodGroups.selectedIndex = groupIndex;
+				
+				updateCmbTestMethods(groupIndex);
+				updateLabelsAndTextInputs(groupIndex);
+				
+				System.gc();
+			}
+			
+			private function updateCmbTestMethods(groupIndex:int):void {
+				cmbTestMethods.dataProvider = new ArrayCollection(_mainEntry.getMethodsDataProvider(groupIndex));
+				cmbTestMethods.selectedIndex = 0;
+			}
+			
+			private function updateLabelsAndTextInputs(groupIndex:int):void {
+				var defaultParas:Array = _mainEntry.getDefaultParaValues(groupIndex);
+				var nParas:int = defaultParas.length;
+				var value1:String = "0";
+				var value2:String = "0";
+				var value3:String = "0";
+				
+				if (nParas > 0) {
+					value1 = defaultParas[0].toString();
+				}
+				
+				if (nParas > 1) {
+					value2 = defaultParas[1].toString();
+				}
+				
+				if (nParas > 2) {
+					value3 = defaultParas[2].toString();
+				}
+				
+				txtDataSize.text = value1;
+				txtDataDim2.text = value2;
+				txtDataDim3.text = value3;
+
+				txtDataSize.enabled = (nParas > 0);
+				txtDataDim2.enabled = (nParas > 1);
+				txtDataDim3.enabled = (nParas > 2);
+				
+				lblDataSize.enabled = txtDataSize.enabled;
+				lblDataDim2.enabled = txtDataDim2.enabled;
+				lblDataDim3.enabled = txtDataDim3.enabled;
+				
+				
+			}
+			
+			private function goClicked(event:MouseEvent):void {
+				txtResult.text += _mainEntry.runTest(cmbMethodGroups.selectedIndex, cmbTestMethods.selectedIndex, 
+					[parseInt(txtDataSize.text),
+						parseInt(txtDataDim2.text), 
+						parseInt(txtDataDim3.text)]);
+				
+				System.gc();
+			}
+			
+			private function clearClicked(event:MouseEvent):void {
+				txtResult.text = "";
+				
+				System.gc();
+			}
+			
+			private function groupChanged(event:Event):void {
+				var groupIndex:int = cmbMethodGroups.selectedIndex;
+				updateCmbTestMethods(groupIndex);
+				
+				updateLabelsAndTextInputs(groupIndex);
+				updateLabelsAndTextInputs(groupIndex);
+				
+				System.gc();
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextArea x="64" y="162" width="881" height="428" id="txtResult"/>
+	<s:TextInput x="195" y="72" width="291" id="txtDataSize" text="1000000"/>
+	<s:Label x="75" y="17" text="Test Method Group:" width="112" height="21"/>
+	<s:TextInput x="195" y="102" width="291" id="txtDataDim2" text="20"/>
+	<s:Label x="75" y="77" text="Data Size Dim 1:" width="112" height="21" id="lblDataSize"/>
+	<s:Button x="516" y="32" label="Go" id="btnGo" click="goClicked(event)" width="131" height="85"/>
+	<s:Label x="75" y="107" text="Data Size Dim 2:" width="112" height="21" id="lblDataDim2"/>
+	<s:ComboBox x="195" y="41" width="291" id="cmbTestMethods"/>
+	<s:ComboBox x="195" y="11" width="291" id="cmbMethodGroups" change="groupChanged(event)"/>
+	<s:Label x="75" y="48" text="Test Method:" width="112"/>
+	<s:Button x="676" y="32" label="Clear Results" width="117" height="85" id="btnClear" click="clearClicked(event)"/>
+	<s:TextInput x="196" y="132" width="290" id="txtDataDim3" text="5"/>
+	<s:Label x="75" y="137" text="Data Size Dim 3:" width="112" height="21" id="lblDataDim3"/>
+</s:Application>

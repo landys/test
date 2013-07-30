@@ -1,4 +1,4 @@
-package {
+package com.landys.baseTest.suits {
 	public class BasicValue {
 		public var min:Number;
 		public var max:Number;
