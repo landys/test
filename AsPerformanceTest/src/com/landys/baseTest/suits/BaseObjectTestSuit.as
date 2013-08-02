@@ -23,15 +23,17 @@ package com.landys.baseTest.suits {
 					new FuncInfo("CreateObjectStringKeyObjects", testCreateObjectStringKeyObjects, nParas), 
 					new FuncInfo("CreateObjectIntKeyObjects", testCreateObjectIntKeyObjects, nParas),
 					new FuncInfo("CreateArrayObjects", testCreateArrayObjects, nParas),
+					new FuncInfo("CreateVectorObjects", testCreateVectorObjects, nParas), 
 					new FuncInfo("ReadClassObjects", testReadClassObjects, nParas),
 					new FuncInfo("ReadObjectStringKeyObjects", testReadObjectStringKeyObjects, nParas),
 					new FuncInfo("ReadObjectIntKeyObjects", testReadObjectIntKeyObjects, nParas), 
-					new FuncInfo("ReadArrayObjects", testReadArrayObjects, nParas)], 
+					new FuncInfo("ReadArrayObjects", testReadArrayObjects, nParas), 
+					new FuncInfo("ReadVectorObjects", testReadVectorObjects, nParas)], 
 				nParas);
 		}
 		
 		public override function getDefaultParaValues():Array {
-			return [500000];
+			return [1000000];
 		}
 		
 		//// test read objects
@@ -107,6 +109,24 @@ package com.landys.baseTest.suits {
 			return results;
 		}
 		
+		private function testReadVectorObjects(n:int):String {
+			var m1:Number;
+			var m2:Number;
+			var unit:Number = 1024 * 1024;
+			var results:String = "";
+			var a:Array = createVectorObjects(n);
+			var i:int;
+			var total:int = 0;
+			var t1:int = getTimer();
+			for (i=0; i<n; ++i) {
+				total += (a[i][0] + a[i][1]);
+			}
+			var t2:int = getTimer();
+			results += ("vector-n-time," + n + "," + (t2 - t1) + "\n");
+			
+			return results;
+		}
+
 		//// test create objects
 		private function testCreateClassObjects(n:int):String {
 			var m1:Number;
@@ -168,6 +188,21 @@ package com.landys.baseTest.suits {
 			return results;
 		}
 		
+		private function testCreateVectorObjects(n:int):String {
+			var m1:Number;
+			var m2:Number;
+			var unit:Number = 1024 * 1024;
+			var results:String = "";
+			var t1:int = getTimer();
+			m1 = System.totalMemory / unit;
+			var a:Array = createVectorObjects(n);
+			m2 = System.totalMemory / unit;
+			var t2:int = getTimer();
+			results += ("vector-n-begin-end-cost-time," + n + "," + m1 + "," + m2 + "," + (m2 - m1) + "," + (t2 - t1) + "\n");
+			
+			return results;
+		}
+		
 		private function createClassObjects(n:int):Array {
 			var a:Array = [];
 			var o:BasicValue;
@@ -208,6 +243,17 @@ package com.landys.baseTest.suits {
 			var o:Array;
 			for (var i:int=0; i<n; ++i) {
 				o = [i, i];
+				a.push(o);
+			}
+			
+			return a;
+		}
+		
+		private function createVectorObjects(n:int):Array {
+			var a:Array = [];
+			var o:Vector.<int>;
+			for (var i:int=0; i<n; ++i) {
+				o = new <int>[i, i,];
 				a.push(o);
 			}
 			

@@ -61,11 +61,14 @@
 				lblDataSize.enabled = txtDataSize.enabled;
 				lblDataDim2.enabled = txtDataDim2.enabled;
 				lblDataDim3.enabled = txtDataDim3.enabled;
-				
-				
 			}
 			
 			private function goClicked(event:MouseEvent):void {
+				if (cmbMethodGroups.selectedIndex < 0 || cmbTestMethods.selectedIndex < 0) {
+					txtResult.text += "Please select group and method first.\n";
+					return;
+				}
+				
 				txtResult.text += _mainEntry.runTest(cmbMethodGroups.selectedIndex, cmbTestMethods.selectedIndex, 
 					[parseInt(txtDataSize.text),
 						parseInt(txtDataDim2.text), 
@@ -82,6 +85,8 @@
 			
 			private function groupChanged(event:Event):void {
 				var groupIndex:int = cmbMethodGroups.selectedIndex;
+				if (groupIndex < 0) return;
+				
 				updateCmbTestMethods(groupIndex);
 				
 				updateLabelsAndTextInputs(groupIndex);
@@ -102,8 +107,8 @@
 	<s:Label x="75" y="77" text="Data Size Dim 1:" width="112" height="21" id="lblDataSize"/>
 	<s:Button x="516" y="32" label="Go" id="btnGo" click="goClicked(event)" width="131" height="85"/>
 	<s:Label x="75" y="107" text="Data Size Dim 2:" width="112" height="21" id="lblDataDim2"/>
-	<s:ComboBox x="195" y="41" width="291" id="cmbTestMethods"/>
-	<s:ComboBox x="195" y="11" width="291" id="cmbMethodGroups" change="groupChanged(event)"/>
+	<s:ComboBox x="195" y="41" width="291" id="cmbTestMethods" requireSelection="true"/>
+	<s:ComboBox x="195" y="11" width="291" id="cmbMethodGroups" change="groupChanged(event)" requireSelection="true"/>
 	<s:Label x="75" y="48" text="Test Method:" width="112"/>
 	<s:Button x="676" y="32" label="Clear Results" width="117" height="85" id="btnClear" click="clearClicked(event)"/>
 	<s:TextInput x="196" y="132" width="290" id="txtDataDim3" text="5"/>

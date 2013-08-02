@@ -1,5 +1,6 @@
 package com.landys.baseTest {
 	import com.landys.baseTest.suits.ArrayDimensionTestSuit;
+	import com.landys.baseTest.suits.ArrayVsVectorTestSuit;
 	import com.landys.baseTest.suits.BaseObjectTestSuit;
 	import com.landys.baseTest.suits.ITestSuit;
 
@@ -8,7 +9,7 @@ package com.landys.baseTest {
 		/**
 		 * Array of different test suits. 
 		 */
-		private var _testSuits:Array = [new BaseObjectTestSuit(), new ArrayDimensionTestSuit()];
+		private var _testSuits:Array = [new BaseObjectTestSuit(), new ArrayDimensionTestSuit(), new ArrayVsVectorTestSuit()];
 
 		public function MainEntry() {
 		}
